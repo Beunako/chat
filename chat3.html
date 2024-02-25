@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitch chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+
+
+
+        #chat li:last-of-type {
+
+        animation-duration: 0.20s;
+        animation-timing-function: ease-in;
+        animation: bounce-in 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) both;
+        transform-origin: center;
+        }
+      
+        @keyframes bounce-in {
+
+        0% {
+            transform: scale(0.1);
+            opacity: 0;
+        }
+    
+         100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        }
+
+        .message {
+
+            word-wrap: break-word;
+
+        }
+
+        .user {
+
+            font-size: 18px;
+            margin-right: 5px;
+            border: 20px;
+            display: block;
+            height: 18px;
+            width: 100%;
+            padding-left: 0px;
+            padding-left: 0px;
+            padding-top: 5px;
+            padding-bottom: 10px;
+            color:#9d6060;
+        }
+
+        html,body {
+
+            font-family: "VT323", monospace;
+            font-weight: 400;
+            font-style: normal;
+            margin: 0;
+            color: hsl(0deg 0% 100%);
+         }
+        
+        #chat {
+
+            width: 400px;
+            height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse;
+
+        }
+
+        #chat::-webkit-scrollbar {
+
+            display: none;
+        }
+
+        #chat ul {
+            margin-left: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            list-style-position: outside;
+        }
+
+        #chat li {
+            border-radius: 10px;
+            border: solid;
+            border-top-width: 10px;
+            border-right-width: 15px;
+            border-left-width: 15px;
+            border-bottom-width: 15px;
+            border-image: url(https://i.imgur.com/uqZRWjp.png) 30 stretch;
+            list-style-type: none;
+            background-color: hsl(0deg 0% 0% / 70%);
+            box-sizing: border-box;
+            margin-bottom: 10px;
+    
+        }
+
+        #chat blockquote {
+            font-size: 1.2rem;
+        }
+
+        #chat li:not(:last-of-type) {
+            opacity: 0.5;
+    
+}
+
+
+        .alert {
+            border-radius: 10px;
+            border: solid;
+            border-top-width: 10px;
+            border-right-width: 15px;
+            border-left-width: 15px;
+            border-bottom-width: 15px;
+            border-image: url(https://i.imgur.com/uqZRWjp.png) 30 stretch;
+            background-color: #ffcc00; 
+            color: #333; 
+            font-weight: bold; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin-bottom: 10px; 
+}
+
+    </style>
+</head>
+
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        var chat = document.querySelector("#chat>ul");
+
+       // Função para adicionar uma nova mensagem ao chat com classe de alerta
+       function addAlertMessageToChat(message) {
+
+            var newMessage = document.createElement("li");
+            newMessage.classList.add('alert'); // Adiciona a classe de alerta ao elemento li
+            newMessage.textContent = message;
+            chat.appendChild(newMessage);
+    }
+
+    // Configuração do evento onSub para exibir um alerta no chat quando houver uma nova inscrição
+    ComfyJS.onSub = (user, message, subTierInfo, extra) => {
+
+        console.log(`${user} se inscreveu!`); // Verifica no console do navegador se o evento está sendo acionado
+        var alertMessage = `${user} se inscreveu!`;
+        addAlertMessageToChat(alertMessage);
+}
+
+    ComfyJS.onChat = (user, message, flags, self, extra) => {
+        
+        var newMessage = document.createElement("li");
+        var userElement = document.createElement("span");
+        var messageElement = document.createElement("span");
+
+        userElement.classList.add('user');
+        messageElement.classList.add('message');
+
+        userElement.innerText = user + ':';
+        messageElement.innerText = message;
+
+        newMessage.appendChild(userElement);
+        newMessage.appendChild(messageElement);
+
+        chat.appendChild(newMessage); 
+  
+} 
+
+    ComfyJS.Init("dallight");
+});
+
+    </script>
+    <div id="chat">
+        <ul>
+        </ul>
+    </div>
+</body>
+
+</html>
